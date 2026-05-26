@@ -3,12 +3,13 @@
 <p>현재 다양한 언어들과 기술을 배우고 있습니다.</p>
 <h1>🌱Learning🌱</h1>
 <h3>🖥️ Frontend</h3>
-<p class="p">HTML</p>
-<p class="p">CSS</p>
+<p>HTML</p>
+<p>CSS</p>
 <h3>⚙️ Backend</h3>
-<p class="p">Java</p>
-<p class="p">Spring</p>
-<p class="p">Ruby</p>
+<p>Java</p>
+<p>Spring</p>
+<p>Ruby</p>
 <h3>🤓Else</h3>
-<p class="p">Python</p>
-<p class="p">C</p>
+<p>Python</p>
+<p>C</p>
+<p>Lua</p>
