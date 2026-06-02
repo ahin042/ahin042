@@ -15,4 +15,4 @@
 ![C](https://img.shields.io/badge/C-555555?style=flat&logo=c&logoColor=white) ![Lua](https://img.shields.io/badge/Lua-00007C?style=flat&logo=lua&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white) ![Ruby](https://img.shields.io/badge/Ruby-CC342D?style=flat&logo=ruby&logoColor=white)
 
 
-[![record rotate](https://record-rotate.arkk200.workers.dev/?width=600&albums=DPR%20LIVE%3AHer%2CBIG%20Naughty%3A%EB%82%AD%EB%A7%8C%2CDhruv%3Arapunzel%2CWMU)](https://record-rotate.arkk200.workers.dev/?width=600&albums=DPR%20LIVE%3AHer%2CBIG%20Naughty%3A%EB%82%AD%EB%A7%8C%2CDhruv%3Arapunzel%2CWMU)
+[![record rotate](https://record-rotate.arkk200.workers.dev/?width=600&albums=DPR%20LIVE%3AHer%2CBIG%20Naughty%3A%EB%82%AD%EB%A7%8C%2CDhruv%3Arapunzel)](https://record-rotate.arkk200.workers.dev/?width=600&albums=DPR%20LIVE%3AHer%2CBIG%20Naughty%3A%EB%82%AD%EB%A7%8C%2CDhruv%3Arapunzel)
