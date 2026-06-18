@@ -7,6 +7,10 @@
 
 다양한 언어와 기술을 깊이 있게 학습하고 있습니다.
 
+# 📄Record📄
+[Notion - 개인회고](https://www.notion.so/38346e87b3ff802fb0c4ce474c8ac403?source=copy_link)
+
+
 # 🌱Learning🌱
 
 ### 🖥️ Frontend
