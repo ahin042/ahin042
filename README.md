@@ -14,13 +14,13 @@
 # 🌱Learning🌱
 
 ### 🖥️ Frontend
-![HTML](https://img.shields.io/badge/HTML-E34C26?style=flat&logo=html5&logoColor=white) ![CSS](https://img.shields.io/badge/CSS-563D7C?style=flat&logo=css3&logoColor=white)
+![HTML](https://img.shields.io/badge/HTML-E34C26?style=flat-square&logo=html5&logoColor=white) ![CSS](https://img.shields.io/badge/CSS-563D7C?style=flat-square&logo=css3&logoColor=white)
 
 ### ⚙️ Backend
-![Java](https://img.shields.io/badge/Java-B07219?style=flat&logo=openjdk&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+![Java](https://img.shields.io/badge/Java-B07219?style=flat-square&logo=openjdk&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 
 ### 🛠️ Frameworks
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat&logo=spring&logoColor=white) ![Flask](https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=spring&logoColor=white) ![Flask](https://img.shields.io/badge/Flask-000000?style=flat-square&logo=flask&logoColor=white)
 
 ### 🤓 Else
-![C](https://img.shields.io/badge/C-555555?style=flat&logo=c&logoColor=white) ![Lua](https://img.shields.io/badge/Lua-00007C?style=flat&logo=lua&logoColor=white) ![Ruby](https://img.shields.io/badge/Ruby-CC342D?style=flat&logo=ruby&logoColor=white)
+![C](https://img.shields.io/badge/C-555555?style=flat-square&logo=c&logoColor=white) ![Lua](https://img.shields.io/badge/Lua-00007C?style=flat-square&logo=lua&logoColor=white) ![Ruby](https://img.shields.io/badge/Ruby-CC342D?style=flat-square&logo=ruby&logoColor=white)
