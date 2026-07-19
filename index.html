@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>GitHub 3D Contributions</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --ink:#1F2328;
+    --muted:#59636E;
+    --line:#D0D7DE;
+    --card-bg:#F6F8FA;
+    --accent:#1a7f37;
+    --btn-active:#0969DA;
+    --lv0:#EBEDF0;
+    --lv1:#9BE9A8;
+    --lv2:#40C463;
+    --lv3:#30A14E;
+    --lv4:#216E39;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Pretendard",Helvetica,Arial,sans-serif;}
+  #app{position:relative; width:100%; height:560px; max-width:900px; margin:0 auto;
+    border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--bg);}
+
+  .topbar{position:absolute; top:0; left:0; right:0; display:flex; justify-content:space-between;
+    align-items:center; padding:16px 20px; z-index:5; pointer-events:none;}
+  .topbar h2{margin:0; font-size:16px; font-weight:600;}
+  .controls{display:flex; gap:8px; align-items:center; pointer-events:auto;}
+  .settings{font-size:13px; color:var(--muted); border:1px solid var(--line); border-radius:6px;
+    padding:5px 10px; background:var(--bg); cursor:default;}
+  .toggle{display:flex; border:1px solid var(--line); border-radius:6px; overflow:hidden;}
+  .toggle button{border:none; background:var(--bg); color:var(--muted); font-size:12px; font-weight:600;
+    padding:5px 12px; cursor:pointer;}
+  .toggle button.active{background:var(--btn-active); color:#fff;}
+
+  #canvas-wrap{position:absolute; inset:0;}
+  canvas{display:block; width:100%; height:100%; cursor:grab;}
+  canvas:active{cursor:grabbing;}
+
+  .contrib-label{position:absolute; bottom:20px; left:20px; z-index:5; pointer-events:none;
+    font-size:13px; color:var(--muted); font-weight:500;}
+  .contrib-label b{color:var(--ink); font-weight:700;}
+
+  #tooltip{position:absolute; z-index:10; pointer-events:none; background:#24292f; color:#fff;
+    padding:6px 10px; border-radius:6px; font-size:12px; opacity:0; transform:translate(-50%,-125%);
+    transition:opacity .1s; white-space:nowrap;}
+  .credit{position:absolute; bottom:6px; right:14px; font-size:10px; color:var(--muted); z-index:5;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar">
+    <h2>Contribution Activity</h2>
+    <div class="controls">
+      <div class="settings">Contribution settings ▾</div>
+      <div class="toggle">
+        <button id="btn2d">2D</button>
+        <button id="btn3d" class="active">3D</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="canvas-wrap"></div>
+  <div id="tooltip"></div>
+
+  <div class="contrib-label"><b id="statTotal">-</b> contributions</div>
+
+  <div class="credit">made for ahin042</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* =========================================================================
+   1) 데이터 — 여기를 실제 커밋 데이터로 교체하세요.
+   weeks: 53개, 각 주는 7개의 { count, date } 객체
+   ========================================================================= */
+function generateSampleData(){
+  const weeks = 53, days = 7;
+  const data = [];
+  const start = new Date();
+  start.setDate(start.getDate() - weeks*7);
+  let cursor = new Date(start);
+  for(let w=0; w<weeks; w++){
+    const week = [];
+    for(let d=0; d<days; d++){
+      const recency = w/weeks;
+      const r = Math.random();
+      let count = 0;
+      if(recency > 0.72){ count = r < 0.15 ? 0 : Math.floor(Math.pow(Math.random(),0.5)*9); }
+      else if(recency > 0.4){ count = r < 0.55 ? 0 : Math.floor(Math.random()*4); }
+      else { count = r < 0.85 ? 0 : Math.floor(Math.random()*3); }
+      week.push({count, date:new Date(cursor)});
+      cursor.setDate(cursor.getDate()+1);
+    }
+    data.push(week);
+  }
+  return data;
+}
+const contributionData = generateSampleData();
+
+function levelOf(c){ if(c<=0) return 0; if(c<=2) return 1; if(c<=4) return 2; if(c<=6) return 3; return 4; }
+const fmt = d => `${d.toLocaleString('en-US',{month:'short'})} ${d.getDate()}`;
+
+let total=0,best=0,bestDate=null,longest=0,longestEnd=null,cur=0,curStart=null;
+contributionData.forEach(week=>week.forEach(({count,date})=>{
+  total+=count;
+  if(count>best){best=count; bestDate=date;}
+  if(count>0){ if(cur===0) curStart=date; cur++; if(cur>longest){longest=cur; longestEnd=date;} }
+  else cur=0;
+}));
+document.getElementById('statTotal').textContent = total;
+
+/* =========================================================================
+   2) Three.js 씬
+   ========================================================================= */
+const wrap = document.getElementById('canvas-wrap');
+const scene = new THREE.Scene();
+scene.background = null;
+scene.fog = new THREE.Fog(0xffffff, 70, 150);
+
+let mode3D = true;
+const camera = new THREE.PerspectiveCamera(35, wrap.clientWidth/wrap.clientHeight, 0.1, 500);
+let camDist=58, camTheta=Math.PI*0.25, camPhi=Math.PI*0.30;
+const camPhi2D = 0.02;
+function updateCamera(){
+  const phi = mode3D ? camPhi : camPhi2D;
+  camera.position.set(
+    camDist*Math.sin(phi)*Math.sin(camTheta),
+    camDist*Math.cos(phi),
+    camDist*Math.sin(phi)*Math.cos(camTheta)
+  );
+  camera.lookAt(0,0,0);
+}
+updateCamera();
+
+const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+renderer.shadowMap.enabled = true;
+wrap.appendChild(renderer.domElement);
+
+const hemi = new THREE.HemisphereLight(0xffffff, 0xd7dde3, 0.85);
+scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xffffff, 0.9);
+sun.position.set(25,40,20);
+sun.castShadow = true;
+sun.shadow.mapSize.set(1024,1024);
+sun.shadow.camera.left=-40; sun.shadow.camera.right=40;
+sun.shadow.camera.top=40; sun.shadow.camera.bottom=-40;
+scene.add(sun);
+
+const weeks = contributionData.length, days=7, cell=1.0, gap=0.18;
+const baseGeo = new THREE.PlaneGeometry(weeks*(cell+gap)+2, days*(cell+gap)+2);
+const baseMat = new THREE.MeshStandardMaterial({color:0xC7CCD1, roughness:1});
+const groundPlane = new THREE.Mesh(baseGeo, baseMat);
+groundPlane.rotation.x = -Math.PI/2;
+groundPlane.position.y = -0.001;
+groundPlane.receiveShadow = true;
+scene.add(groundPlane);
+
+const colorMap = {0:0xEBEDF0, 1:0x9BE9A8, 2:0x40C463, 3:0x30A14E, 4:0x216E39};
+const boxGroup = new THREE.Group();
+scene.add(boxGroup);
+const pickables = [];
+
+for(let w=0; w<weeks; w++){
+  for(let d=0; d<days; d++){
+    const {count,date} = contributionData[w][d];
+    const level = levelOf(count);
+    const h = level===0 ? 0.06 : 0.35 + level*0.85;
+    const geo = new THREE.BoxGeometry(cell, h, cell);
+    const mat = new THREE.MeshStandardMaterial({color:colorMap[level], roughness:0.65, metalness:0.02});
+    const box = new THREE.Mesh(geo, mat);
+    const x = (w - weeks/2)*(cell+gap);
+    const z = (d - days/2)*(cell+gap);
+    box.position.set(x, h/2, z);
+    box.castShadow = true;
+    box.receiveShadow = true;
+    box.userData = {count, level, date};
+    boxGroup.add(box);
+    pickables.push(box);
+  }
+}
+
+/* =========================================================================
+   3) 인터랙션
+   ========================================================================= */
+let isDragging=false, lastX=0, lastY=0, autoRotate=true;
+const dom = renderer.domElement;
+dom.addEventListener('pointerdown', e=>{isDragging=true; autoRotate=false; lastX=e.clientX; lastY=e.clientY;});
+window.addEventListener('pointerup', ()=>isDragging=false);
+window.addEventListener('pointermove', e=>{
+  if(isDragging && mode3D){
+    const dx=e.clientX-lastX, dy=e.clientY-lastY;
+    camTheta -= dx*0.006;
+    camPhi = Math.min(Math.max(camPhi - dy*0.004, 0.12), Math.PI/2-0.05);
+    lastX=e.clientX; lastY=e.clientY;
+    updateCamera();
+  }
+  handleHover(e);
+});
+dom.addEventListener('wheel', e=>{
+  camDist = Math.min(Math.max(camDist + e.deltaY*0.05, 22), 120);
+  updateCamera();
+  e.preventDefault();
+}, {passive:false});
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+const tooltip = document.getElementById('tooltip');
+function handleHover(e){
+  const rect = dom.getBoundingClientRect();
+  mouse.x = ((e.clientX-rect.left)/rect.width)*2-1;
+  mouse.y = -((e.clientY-rect.top)/rect.height)*2+1;
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(pickables, false);
+  if(hits.length>0){
+    const u = hits[0].object.userData;
+    tooltip.style.opacity=1;
+    tooltip.style.left=(e.clientX-rect.left)+'px';
+    tooltip.style.top=(e.clientY-rect.top)+'px';
+    tooltip.textContent = `${u.count} contributions on ${fmt(u.date)}`;
+    dom.style.cursor='pointer';
+  } else {
+    tooltip.style.opacity=0;
+    dom.style.cursor='grab';
+  }
+}
+
+document.getElementById('btn2d').addEventListener('click', ()=>setMode(false));
+document.getElementById('btn3d').addEventListener('click', ()=>setMode(true));
+function setMode(is3D){
+  mode3D = is3D;
+  document.getElementById('btn2d').classList.toggle('active', !is3D);
+  document.getElementById('btn3d').classList.toggle('active', is3D);
+  updateCamera();
+}
+
+window.addEventListener('resize', ()=>{
+  camera.aspect = wrap.clientWidth/wrap.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+});
+
+function animate(){
+  requestAnimationFrame(animate);
+  if(autoRotate && !isDragging && mode3D){
+    camTheta += 0.0012;
+    updateCamera();
+  }
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
