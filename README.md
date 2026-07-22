@@ -1,3 +1,3 @@
 <p align="center">
-  <img src="java-lowercase-pixel.svg" alt="Java" width="400" />
+  <img src="./assets/java-python-pixel-v6.svg" alt="Java & Python" width="500" />
 </p>
