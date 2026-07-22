@@ -1,3 +1,3 @@
 <p align="center">
-  <img src="java-python-grass-v5.svg" alt="Java Python" width="500" />
+  <img src="java-python-grass-padded.svg" alt="Java Python" width="500" />
 </p>
