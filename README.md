@@ -4,4 +4,10 @@
 >
 > 현재 다양한 언어들과 기술을 깊이 있게 학습하고 있습니다.
 >
+### I am Kwon Ah-in, a student at Daegu Software Meister High School.
+
+> To become a **backend developer** who understands system structure and data flow,
+>
+> I am currently studying various languages ​​and technologies in depth.
+>
 <img src="https://raw.githubusercontent.com/ahin042/codeup_Python/main/codeup-stats.svg" width="400" alt="CodeUp Stats" />
