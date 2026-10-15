@@ -1,13 +1,1 @@
-<p align="center">
-  <img src="4.jpg" width="30%">
-  <img src="1.jpg" width="30%">
-  <img src="7.jpg" width="30%">
-  <br>
-  <img src="9.jpg" width="30%">
-  <img src="8.jpg" width="30%">
-  <img src="6.jpg" width="30%">
-  <br>
-  <img src="2.jpg" width="30%">
-  <img src="3.jpg" width="30%">
-  <img src="5.jpg" width="30%">
-</p>
+<img width="865" height="516" alt="스크린샷 2026-10-15 오후 5 56 08" src="https://github.com/user-attachments/assets/35861f9a-9d4d-473a-be05-004fe4b0ece2" />
