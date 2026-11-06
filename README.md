@@ -1,3 +1,13 @@
-<h1 align="center">Back-end Developer</h1>
-<img width="807" height="477" alt="스크린샷 2026-10-15 오후 5 58 11" src="https://github.com/user-attachments/assets/d119cd71-7dd5-4213-a731-b4172962534a" />
-
+```java
+public class ShowInfo {
+    public static void main(String[] args) {
+        BackendDeveloper ahin = BackendDeveloper.builder()
+                .name("ahin")
+                .school("Daegu Software Meister High School")
+                .techStack(List.of("Java", "Spring Boot", "Python"))
+                .tools(List.of("Git", "GitHub", "IntelliJ IDEA", "PyCharm", "Figma"))
+                .build();
+        ahin.run();
+    }
+}
+```
