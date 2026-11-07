@@ -5,7 +5,7 @@ public class ShowInfo {
                 .name("ahin")
                 .school("Daegu Software Meister High School")
                 .techStack(List.of("Java", "Spring Boot", "Python"))
-                .tools(List.of("Git", "GitHub", "IntelliJ IDEA", "PyCharm", "Figma"))
+                .tools(List.of("Git", "GitHub", "IntelliJ IDEA", "PyCharm", "Figma", "Expo GO"))
                 .build();
         ahin.run();
     }
